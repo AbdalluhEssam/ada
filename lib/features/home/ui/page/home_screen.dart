@@ -1,7 +1,10 @@
-import 'package:ada/features/home/ui/cubit/counter_cubit.dart';
-import 'package:ada/features/home/ui/cubit/counter_state.dart';
+
+import 'package:ada/features/home/ui/bloc/counter_event.dart';
+import 'package:ada/features/home/ui/bloc/counter_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../bloc/counter_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,7 +12,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CounterCubit(),
+      create: (context) => CounterBloc(),
       child: Scaffold(
         appBar: AppBar(title: const Text('Home Screen')),
         body: Center(
@@ -18,7 +21,7 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('Welcome to the Home Screen!'),
-              BlocBuilder<CounterCubit, CounterState>(
+              BlocBuilder<CounterBloc, CounterBlocState>(
                 builder:
                     (context, state) => Text(
                       "Counter: ${state.counter}",
@@ -32,11 +35,11 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: BlocBuilder<CounterCubit, CounterState>(
+        floatingActionButton: BlocBuilder<CounterBloc, CounterBlocState>(
           builder: (context, state) {
             return FloatingActionButton(
               onPressed: () {
-                context.read<CounterCubit>().increment();
+                context.read<CounterBloc>().add(IncrementEvent());
               },
               child: const Icon(Icons.add),
             );
