@@ -1,3 +1,4 @@
+import 'package:ada/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: Scaffold(),
+      home: HomeScreen(),
     );
   }
 }
