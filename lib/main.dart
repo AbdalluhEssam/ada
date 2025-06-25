@@ -1,13 +1,15 @@
+import 'package:ada/core/routing/routes.dart';
 import 'package:flutter/material.dart';
-
-import 'features/home/ui/views/home_screen.dart';
+import 'core/routing/app_router.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp(appRouter: AppRouter()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final AppRouter appRouter;
+
+  const MyApp({super.key, required this.appRouter});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,8 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(color: Colors.black, fontSize: 20),
         ),
       ),
-      home: HomeScreen(),
+      initialRoute: Routes.splashScreen,
+      onGenerateRoute: appRouter.generateRoute,
     );
   }
 }
