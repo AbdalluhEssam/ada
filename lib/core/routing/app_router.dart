@@ -1,5 +1,6 @@
 import 'package:ada/core/routing/routes.dart';
 import 'package:ada/features/home/ui/views/home_screen.dart';
+import 'package:ada/features/onboarding/ui/views/onboarding_screen.dart';
 import 'package:ada/features/splash_screen/ui/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,9 @@ class AppRouter {
     switch (settings.name) {
       case Routes.splashScreen:
         return _createRoute(SplashScreen());
+      case Routes.onboardingScreen:
+        return _createRoute(OnboardingScreen());
+
       case Routes.homeScreen:
         return _createRoute(HomeScreen());
 
