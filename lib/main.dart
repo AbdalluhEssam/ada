@@ -1,5 +1,6 @@
-import 'package:ada/features/home/ui/page/home_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'features/home/ui/views/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
