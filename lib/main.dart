@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: GoogleFonts.cairo().fontFamily,
       ),
-      initialRoute: Routes.testScreen,
+      initialRoute: Routes.splashScreen,
       onGenerateRoute: appRouter.generateRoute,
     );
   }

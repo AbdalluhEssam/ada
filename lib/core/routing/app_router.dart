@@ -1,10 +1,9 @@
 import 'package:ada/core/routing/routes.dart';
+import 'package:ada/features/auth/login/ui/screens/login_screen.dart';
 import 'package:ada/features/home/ui/views/home_screen.dart';
 import 'package:ada/features/onboarding/ui/views/onboarding_screen.dart';
 import 'package:ada/features/splash_screen/ui/views/splash_screen.dart';
 import 'package:flutter/material.dart';
-
-import '../../features/test/ui/screen/test_screen.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -14,11 +13,10 @@ class AppRouter {
         return _createRoute(SplashScreen());
       case Routes.onboardingScreen:
         return _createRoute(OnboardingScreen());
-
       case Routes.homeScreen:
         return _createRoute(HomeScreen());
-      case Routes.testScreen:
-        return _createRoute(TestScreen());
+      case Routes.loginScreen:
+        return _createRoute(LoginScreen());
 
       default:
         return MaterialPageRoute(

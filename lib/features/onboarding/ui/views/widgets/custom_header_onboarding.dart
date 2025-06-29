@@ -1,4 +1,6 @@
+import 'package:ada/features/onboarding/ui/cubit/onboading_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'custom_text_button.dart';
 
@@ -7,32 +9,41 @@ class CustomHeaderOnboarding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        RichText(
-          text: TextSpan(
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 18,
-            ),
-            text: "1",
-            children: [
-              TextSpan(
-                text: "/3",
+    return BlocBuilder<OnboardingCubit, int>(
+      builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            RichText(
+              text: TextSpan(
                 style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  color: Colors.grey,
-                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 18,
                 ),
+                text: "${state + 1}",
+                children: [
+                  TextSpan(
+                    text: "/3",
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.grey,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        CustomTextButton(text: "Skip"),
-      ],
+            ),
+            CustomTextButton(
+              text: "Skip",
+              onPressed: () {
+                context.read<OnboardingCubit>().skip();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
