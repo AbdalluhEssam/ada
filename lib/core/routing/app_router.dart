@@ -4,6 +4,8 @@ import 'package:ada/features/onboarding/ui/views/onboarding_screen.dart';
 import 'package:ada/features/splash_screen/ui/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../features/test/ui/screen/test_screen.dart';
+
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
@@ -15,6 +17,8 @@ class AppRouter {
 
       case Routes.homeScreen:
         return _createRoute(HomeScreen());
+      case Routes.testScreen:
+        return _createRoute(TestScreen());
 
       default:
         return MaterialPageRoute(
