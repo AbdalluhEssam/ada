@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "857837821643",
+    "project_id": "ada-ecommerce-649fe",
+    "storage_bucket": "ada-ecommerce-649fe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857837821643:android:a0b8543d86ea7ea5a1c54e",
+        "android_client_info": {
+          "package_name": "com.example.ada"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlryr0n8nRZqTFRBb90-ZLVx-0LbBnr5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

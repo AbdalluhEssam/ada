@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 
@@ -6,6 +7,8 @@ part 'sginup_state.dart';
 
 class SignupCubit extends Cubit<SignUpState> {
   SignupCubit() : super(SignUpInitial());
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -24,9 +27,27 @@ class SignupCubit extends Cubit<SignUpState> {
     emit(SignUpInitial());
   }
 
-  void signUp() {
+  void signUp() async{
     if (formKey.currentState?.validate() == true) {
-      emit(SignUpSuccess());
+      emit(SignUpLoading());
+      try {
+        await auth.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        emit(SignUpSuccess());
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+        emit(SignUpError());
+      } catch (e) {
+        emit(SignUpError());
+        print(e);
+      }
+
     }
   }
 }
