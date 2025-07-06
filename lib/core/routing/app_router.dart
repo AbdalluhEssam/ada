@@ -1,5 +1,6 @@
 import 'package:ada/core/routing/routes.dart';
 import 'package:ada/features/auth/login/ui/screens/login_screen.dart';
+import 'package:ada/features/auth/signup/ui/screens/sign_up_screen.dart';
 import 'package:ada/features/home/ui/views/home_screen.dart';
 import 'package:ada/features/onboarding/ui/views/onboarding_screen.dart';
 import 'package:ada/features/splash_screen/ui/views/splash_screen.dart';
@@ -17,6 +18,8 @@ class AppRouter {
         return _createRoute(HomeScreen());
       case Routes.loginScreen:
         return _createRoute(LoginScreen());
+      case Routes.signupsScreen:
+        return _createRoute(SignUpScreen());
 
       default:
         return MaterialPageRoute(

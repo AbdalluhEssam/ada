@@ -19,11 +19,17 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
-        useMaterial3: true,
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(color: Colors.black, fontSize: 20),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 0.0,
         ),
-        fontFamily: GoogleFonts.cairo().fontFamily,
+        useMaterial3: true,
+        fontFamily: "Montserrat",
+        // textTheme: const TextTheme(
+        //   bodyMedium: TextStyle(color: Colors.black, fontSize: 20,fontFamily: "Montserrat",),
+        // ),
+
       ),
       initialRoute: Routes.splashScreen,
       onGenerateRoute: appRouter.generateRoute,

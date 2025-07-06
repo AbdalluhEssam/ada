@@ -31,6 +31,7 @@ class CustomBodyOnboarding extends StatelessWidget {
                     fontWeight: FontWeight.w900,
                     color: Colors.black,
                     fontSize: 24,
+
                   ),
                 ),
                 SizedBox(height: 10),

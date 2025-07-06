@@ -1,43 +1,113 @@
+import 'package:ada/core/constants/app_assets.dart';
+import 'package:ada/core/theme/app_colors.dart';
+import 'package:ada/core/widgets/custom_button.dart';
+import 'package:ada/core/widgets/custom_login_with_google.dart';
+import 'package:ada/core/widgets/custom_text_auth.dart';
+import 'package:ada/core/widgets/custom_text_form_field.dart';
+import 'package:ada/core/widgets/signup_login_text.dart';
+import 'package:ada/features/auth/login/ui/cubit/login_cubit.dart';
+import 'package:ada/features/auth/login/ui/screens/widgets/login_social_row.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../core/utils/app_utils.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
+    return BlocProvider(
+      create: (context) => LoginCubit(),
+      child: Scaffold(
+        appBar: AppBar(toolbarHeight: 0),
+        body: BlocBuilder<LoginCubit, LoginState>(
+          builder: (context, state) {
+            final loginCubit = context.read<LoginCubit>();
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Form(
+                  key: loginCubit.formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomTextAuth(text: "Welcome\nBack!"),
+                      const SizedBox(height: 36),
+                      CustomTextFormField(
+                        hintText: "Username or Email",
+                        controller: loginCubit.emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: Icon(Icons.person),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your username or email';
+                          }
+                          if (!AppUtils.isEmailValid(value.trim())) {
+                            return 'Enter a valid email address';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 32),
+                      CustomTextFormField(
+                        obscureText: loginCubit.obscureText,
+                        hintText: "Password",
+                        controller: loginCubit.passwordController,
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: Icon(CupertinoIcons.lock_fill),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            loginCubit.toggleObscureText();
+                          },
+                          icon: Icon(
+                            loginCubit.obscureText == true
+                                ? CupertinoIcons.eye_fill
+                                : CupertinoIcons.eye_slash,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: Text(
+                            "Forgot Password?",
+                            style: TextStyle(
+                              color: AppColor.primaryColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      CustomButton(
+                        text: "Login",
+                        onPressed: () {
+                          loginCubit.login();
+                        },
+                      ),
+                      const SizedBox(height: 70),
+                      LoginSocialRow(),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 16),
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  // Handle login logic
-                },
-                child: const Text('Login'),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

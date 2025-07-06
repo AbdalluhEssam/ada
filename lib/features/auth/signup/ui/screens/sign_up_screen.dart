@@ -1,0 +1,146 @@
+import 'package:ada/core/theme/app_colors.dart';
+import 'package:ada/core/widgets/custom_button.dart';
+import 'package:ada/core/widgets/custom_text_auth.dart';
+import 'package:ada/core/widgets/custom_text_form_field.dart';
+import 'package:ada/features/auth/signup/ui/screens/widgets/signup_social_row.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../core/utils/app_utils.dart';
+import '../cubit/signup_cubit.dart';
+
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SignupCubit(),
+      child: Scaffold(
+        appBar: AppBar(toolbarHeight: 0),
+        body: BlocBuilder<SignupCubit, SignUpState>(
+          builder: (context, state) {
+            final signupCubit = context.read<SignupCubit>();
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Form(
+                  key: signupCubit.formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomTextAuth(text: "Create an\naccount"),
+                      const SizedBox(height: 36),
+                      CustomTextFormField(
+                        hintText: "Username or Email",
+                        controller: signupCubit.emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: Icon(Icons.person),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your username or email';
+                          }
+                          if (!AppUtils.isEmailValid(value.trim())) {
+                            return 'Enter a valid email address';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 32),
+                      CustomTextFormField(
+                        obscureText: signupCubit.obscureText,
+                        hintText: "Password",
+                        controller: signupCubit.passwordController,
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: Icon(CupertinoIcons.lock_fill),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            signupCubit.toggleObscureText();
+                          },
+                          icon: Icon(
+                            signupCubit.obscureText == true
+                                ? CupertinoIcons.eye_fill
+                                : CupertinoIcons.eye_slash,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      CustomTextFormField(
+                        obscureText: signupCubit.obscureText2,
+                        hintText: "ConfirmPassword",
+                        controller: signupCubit.passwordConfirmController,
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: Icon(CupertinoIcons.lock_fill),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            signupCubit.toggleObscureText2();
+                          },
+                          icon: Icon(
+                            signupCubit.obscureText2 == true
+                                ? CupertinoIcons.eye_fill
+                                : CupertinoIcons.eye_slash,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      RichText(
+                        textAlign: TextAlign.start,
+
+                        text: TextSpan(
+                          text: "By clicking the",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF676767),
+                            fontWeight: FontWeight.normal,
+                            height: 1.4,
+                          ),
+                          children: [
+                            // By clicking the Register button, you agree to the public offer
+                            TextSpan(
+                              text: " Register ",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppColor.primaryColor,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "button, you agree\nto the public offer",
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      CustomButton(
+                        text: "Create Account",
+                        onPressed: () {
+                          signupCubit.signUp();
+                        },
+                      ),
+                      const SizedBox(height: 70),
+                      SignUpSocialRow(),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
