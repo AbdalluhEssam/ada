@@ -12,7 +12,8 @@ class SignupCubit extends Cubit<SignUpState> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController passwordConfirmController = TextEditingController();
+  final TextEditingController passwordConfirmController =
+      TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool obscureText = true;
@@ -22,14 +23,22 @@ class SignupCubit extends Cubit<SignUpState> {
     obscureText = !obscureText;
     emit(SignUpInitial());
   }
+
   void toggleObscureText2() {
     obscureText2 = !obscureText2;
     emit(SignUpInitial());
   }
 
-  void signUp() async{
+  void signUp() async {
     if (formKey.currentState?.validate() == true) {
       emit(SignUpLoading());
+
+      if (passwordController.text != passwordConfirmController.text) {
+        emit(SignUpError(message: 'Passwords do not match'));
+        print('Passwords do not match');
+        return;
+      }
+
       try {
         await auth.createUserWithEmailAndPassword(
           email: emailController.text,
@@ -42,12 +51,11 @@ class SignupCubit extends Cubit<SignUpState> {
         } else if (e.code == 'email-already-in-use') {
           print('The account already exists for that email.');
         }
-        emit(SignUpError());
+        emit(SignUpError(message: e.code));
       } catch (e) {
-        emit(SignUpError());
+        emit(SignUpError(message: e.toString()));
         print(e);
       }
-
     }
   }
 }
