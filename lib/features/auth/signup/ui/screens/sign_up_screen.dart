@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/routing/routes.dart';
 import '../../../../../core/utils/app_utils.dart';
+import '../../../../../core/widgets/custom_loading_app.dart';
 import '../cubit/signup_cubit.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -23,37 +24,7 @@ class SignUpScreen extends StatelessWidget {
         body: BlocConsumer<SignupCubit, SignUpState>(
           listener: (context, state) {
             if (state is SignUpLoading) {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder:
-                    (context) => Dialog(
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CircularProgressIndicator(
-                              color: AppColor.primaryColor,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              'برجاء الانتظار...',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColor.primaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-              );
+              showLoadingApp(context);
             }
             if (state is SignUpSuccess) {
               context.back();

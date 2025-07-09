@@ -2,6 +2,7 @@ import 'package:ada/core/constants/app_assets.dart';
 import 'package:ada/core/theme/app_colors.dart';
 import 'package:ada/core/utils/extensions/navigation_extensions.dart';
 import 'package:ada/core/widgets/custom_button.dart';
+import 'package:ada/core/widgets/custom_loading_app.dart';
 import 'package:ada/core/widgets/custom_login_with_google.dart';
 import 'package:ada/core/widgets/custom_text_auth.dart';
 import 'package:ada/core/widgets/custom_text_form_field.dart';
@@ -25,37 +26,7 @@ class LoginScreen extends StatelessWidget {
         body: BlocConsumer<LoginCubit, LoginState>(
           listener: (context, state) {
             if (state is LoginLoading) {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder:
-                    (context) => Dialog(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CircularProgressIndicator(
-                          color: AppColor.primaryColor,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'برجاء الانتظار...',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColor.primaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
+              showLoadingApp(context);
             }
             if (state is LoginSuccess) {
               context.back();

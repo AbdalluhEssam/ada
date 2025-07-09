@@ -21,13 +21,12 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginInitial());
   }
 
-
   void login() async {
     if (formKey.currentState?.validate() == true) {
       emit(LoginLoading());
 
       try {
-         await FirebaseAuth.instance.signInWithEmailAndPassword(
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );

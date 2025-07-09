@@ -1,14 +1,29 @@
 import 'package:ada/core/routing/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/routing/app_router.dart';
+import 'core/utils/notification_service.dart';
 import 'firebase_options.dart';
+
+bool isLogin = false;
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('📩 إشعار من الخلفية: ${message.notification?.title}');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await isLoggedIn();
+
+  await NotificationService.init(); // دي اللي هنشرحها دلوقتي
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   runApp(MyApp(appRouter: AppRouter()));
 }
 
@@ -31,13 +46,19 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
         fontFamily: "Montserrat",
-        // textTheme: const TextTheme(
-        //   bodyMedium: TextStyle(color: Colors.black, fontSize: 20,fontFamily: "Montserrat",),
-        // ),
-
       ),
-      initialRoute: Routes.splashScreen,
+      initialRoute: isLogin == true ? Routes.homeScreen : Routes.splashScreen,
       onGenerateRoute: appRouter.generateRoute,
     );
+  }
+}
+
+isLoggedIn() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? email = prefs.getString("email");
+  if (email != null && email.isNotEmpty) {
+    isLogin = true;
+  } else {
+    isLogin = false;
   }
 }
