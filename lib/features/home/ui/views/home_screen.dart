@@ -16,21 +16,45 @@ class HomeScreen extends StatelessWidget {
           (context) =>
               HomeCubit()
                 ..getDate()
+                ..getNews()
                 ..requestPermission(),
       child: Scaffold(
         appBar: AppBar(title: const Text('Home')),
         body: BlocListener<HomeCubit, HomeState>(
           listener: (context, state) {
-           if (state is HomeSignOut) {
-             context.pushNamedAndRemoveUntil(Routes.splashScreen);
-           }
+            if (state is HomeSignOut) {
+              context.pushNamedAndRemoveUntil(Routes.splashScreen);
+            }
+            if (state is HomeError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error: ${state.message}')),
+              );
+            }
           },
           child: BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               if (state is HomeLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: AppColor.primaryColor,
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        backgroundColor: Colors.yellow,
+                        color: AppColor.primaryColor,
+                        strokeWidth: 5,
+                        semanticsLabel: 'Loading',
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'Loading...',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.primaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }
@@ -42,38 +66,7 @@ class HomeScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.network("${state.user!.photoURL}"),
-                      Text('Welcome, ${state.user!.displayName ?? 'User'}!'),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.primaryColor,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        child: const Text('Logout'),
-                        onPressed: () {
-                          context.read<HomeCubit>().signOut();
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.primaryColor,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                        child: const Text('Send Verification Email'),
-                        onPressed: () {
-                          context.read<HomeCubit>().sendEmailVerification();
-                        },
-                      ),
-                    ],
+                    children: [Text("Data : ${state.news.first.content}")],
                   ),
                 );
               }

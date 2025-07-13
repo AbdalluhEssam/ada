@@ -9,9 +9,9 @@ final class HomeLoading extends HomeState {}
 final class HomeSignOut extends HomeState {}
 
 final class HomeSuccess extends HomeState {
-  final User? user;
+  final List<NewsModel> news;
 
-  HomeSuccess(this.user);
+  HomeSuccess(this.news);
 }
 
 final class HomeError extends HomeState {

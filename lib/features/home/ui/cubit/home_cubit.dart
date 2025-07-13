@@ -1,9 +1,14 @@
+import 'package:ada/core/constants/endpoint_constants.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../core/network/dio_client.dart';
+import '../../data/models/news_model.dart';
 
 part 'home_state.dart';
 
@@ -12,21 +17,41 @@ class HomeCubit extends Cubit<HomeState> {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  void signOut() async{
+  final dio = DioClient();
+  List<NewsModel> news = [];
+
+  String apiKey = "a08b245643ce47d593f266a2b3bc7c4f";
+
+  // "https://newsapi.org/v2/everything?q=tesla&from=2025-06-13&sortBy=publishedAt&apiKey=$apiKey",
+  getNews() async {
+    emit(HomeLoading());
+    try {
+      var response = await dio.get(
+        EndpointConstants.everything,
+        queryParameters: {
+          "q": "tesla",
+          "from": "2025-06-13",
+          "sortBy": "publishedAt",
+          "apiKey": apiKey,
+        },
+      );
+      news = (response.data['articles'] as List)
+              .map((e) => NewsModel.fromJson(e))
+              .toList();
+      emit(HomeSuccess(news));
+    } catch (e) {
+      emit(HomeError(e.toString()));
+      print("Error : $e");
+    }
+  }
+
+  void signOut() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     auth.signOut();
     prefs.clear();
     emit(HomeSignOut());
   }
-  sendEmailVerification() async {
-    final user = auth.currentUser;
-    if (user != null && !user.emailVerified) {
-      await user?.updateProfile(displayName: "Abdalluh Essam" , photoURL: "https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg");
-      print("Verification email sent to ${user.email}");
-    } else {
-      print("User is null or email already verified");
-    }
-  }
+
   Future<void> requestPermission() async {
     NotificationSettings settings = await FirebaseMessaging.instance
         .requestPermission(
@@ -64,7 +89,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (user != null) {
       await prefs.setString("email", user.email.toString());
       print("prefs : ${prefs.getString("email")}");
-      emit(HomeSuccess(user));
+      // emit(HomeSuccess(user));
     } else {
       emit(HomeError('User not found'));
     }

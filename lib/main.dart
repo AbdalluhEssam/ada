@@ -7,6 +7,9 @@ import 'core/routing/app_router.dart';
 import 'core/utils/notification_service.dart';
 import 'firebase_options.dart';
 
+// This Api Key: a08b245643ce47d593f266a2b3bc7c4f
+
+
 bool isLogin = false;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
