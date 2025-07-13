@@ -21,52 +21,53 @@ class CustomBottomOnboarding extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Visibility(
-              replacement: SizedBox(
-                width: 60, // Adjust width as needed
-              ),
-              visible: state != 0,
-              child: CustomTextButton(
-                text: 'Prev',
-                color: AppColor.textGray,
-                onPressed: () {
-                  controller.previousPage();
-                },
-              ),
-            ),
-
             Row(
               children: [
                 ...List.generate(
                   onboardingPages.length,
                   (index) => AnimatedContainer(
                     duration: Duration(milliseconds: 300),
-                    width: index == state ? 40 : 10,
-                    height: 10,
+                    width: 14,
+                    height: 14,
                     margin: EdgeInsets.symmetric(horizontal: 4),
                     decoration: BoxDecoration(
                       color:
-                          index == state ? AppColor.black : AppColor.textGray,
+                          index == state ? AppColor.primaryColor : AppColor.textGray,
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
               ],
             ),
-            CustomTextButton(
-              text:
+            Row(
+              children: [
+                Visibility(
+                  visible: state != 0,
+                  child: CustomTextButton(
+                    isBack: true,
+                    text: 'Back',
+                    color: AppColor.black,
+                    onPressed: () {
+                      controller.previousPage();
+                    },
+                  ),
+                ),
+                CustomTextButton(
+                  text:
                   state == (onboardingPages.length - 1)
                       ? 'Get Started'
                       : 'Next',
-              color: AppColor.primaryColor,
-              onPressed: () {
-                if (isLastPage) {
-                  context.pushNamedAndRemoveUntil(Routes.loginScreen);
-                } else {
-                  controller.nextPage();
-                }
-              },
-            ),
+                  color: AppColor.white,
+                  onPressed: () {
+                    if (isLastPage) {
+                      context.pushNamedAndRemoveUntil(Routes.loginScreen);
+                    } else {
+                      controller.nextPage();
+                    }
+                  },
+                ),
+              ],
+            )
           ],
         );
       },

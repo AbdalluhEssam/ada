@@ -21,31 +21,36 @@ class CustomBodyOnboarding extends StatelessWidget {
             final page = onboardingPages[index];
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(page.image, width: 300, height: 300),
+                Expanded(child: Image.asset(page.image,fit: BoxFit.cover,)),
                 SizedBox(height: 16),
-                Text(
-                  page.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    color: Colors.black,
-                    fontSize: 24,
 
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        page.title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: Colors.black,
+                          fontSize: 24,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        page.supTitle,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.textGray,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 10),
-                Text(
-                  page.supTitle,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.textGray,
-                    height: 2,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 100),
               ],
             );
           },

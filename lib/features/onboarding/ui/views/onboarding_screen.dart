@@ -1,11 +1,8 @@
 import 'package:ada/features/onboarding/ui/cubit/onboading_cubit.dart';
 import 'package:ada/features/onboarding/ui/views/widgets/custom_body_onboarding.dart';
 import 'package:ada/features/onboarding/ui/views/widgets/custom_bottom_onboarding.dart';
-import 'package:ada/features/onboarding/ui/views/widgets/custom_header_onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../data/reops/onboarding_data.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -15,17 +12,16 @@ class OnboardingScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => OnboardingCubit(),
       child: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: Column(
-              children: [
-                CustomHeaderOnboarding(),
-                Expanded(flex: 2, child: CustomBodyOnboarding()),
-                CustomBottomOnboarding(),
-              ],
+        body: Column(
+          children: [
+            Expanded(flex: 2, child: CustomBodyOnboarding()),
+            SizedBox(height: 60),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: CustomBottomOnboarding(),
             ),
-          ),
+            SizedBox(height: 30),
+          ],
         ),
       ),
     );
