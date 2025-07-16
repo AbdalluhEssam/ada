@@ -57,18 +57,66 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               BlocBuilder<HomeCubit, HomeState>(
-                builder:
-                    (context, state) => Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: CustomTextFormField(
-                        hintText: "Search for news",
-                        prefixIcon: Icon(Icons.search),
-                        onChanged: (value) {
-                          context.read<HomeCubit>().getNews(value.isEmpty ? null : value);
-                          print(value);
-                        },
-                      ),
+                builder: (context, state) {
+                  final controller = context.read<HomeCubit>();
+                  return Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        CustomTextFormField(
+                          hintText: "Search for news",
+                          prefixIcon: Icon(Icons.search),
+                          onChanged: (value) {
+                            controller.getNews(value.isEmpty ? null : value);
+                            print(value);
+                          },
+                        ),
+                        SizedBox(height: 10),
+                        SizedBox(
+                          height: 40,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemBuilder:
+                                (context, index) => GestureDetector(
+                                  onTap: () {
+                                    controller.getNewsByCategory(
+                                      controller.categories[index],
+                                    );
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColor.primaryColor.withOpacity(
+                                        0.1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      controller.categories[index],
+                                      style: TextStyle(
+                                        color: AppColor.primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            separatorBuilder:
+                                (context, index) => SizedBox(height: 10),
+                            itemCount: controller.categories.length,
+                          ),
+                        ),
+                      ],
                     ),
+                  );
+                },
               ),
 
               Expanded(
@@ -108,7 +156,10 @@ class HomeScreen extends StatelessWidget {
                         itemBuilder:
                             (context, index) => GestureDetector(
                               onTap: () {
-                                context.pushNamed(Routes.newsDetailsScreen,arguments: state.news[index]);
+                                context.pushNamed(
+                                  Routes.newsDetailsScreen,
+                                  arguments: state.news[index],
+                                );
                               },
                               child: NewsCard(news: state.news[index]),
                             ),

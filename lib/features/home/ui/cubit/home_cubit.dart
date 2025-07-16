@@ -18,12 +18,30 @@ class HomeCubit extends Cubit<HomeState> {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-
+  List<String> categories = [
+    "business",
+    "entertainment",
+    "general",
+    "health",
+    "science",
+    "sports",
+    "technology",
+  ];
 
   getNews([String? query]) async {
     emit(HomeLoading());
     try {
       final apiNews = await newsApiRepo.fetchNews(query ?? "sports");
+      emit(HomeSuccess(apiNews));
+    } catch (e) {
+      emit(HomeError(e.toString()));
+    }
+  }
+
+  getNewsByCategory(String category) async {
+    emit(HomeLoading());
+    try {
+      final apiNews = await newsApiRepo.fetchNewsByCategory(category);
       emit(HomeSuccess(apiNews));
     } catch (e) {
       emit(HomeError(e.toString()));
