@@ -6,42 +6,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../../core/network/dio_client.dart';
 import '../../data/models/news_model.dart';
+import '../../data/repos/news_api_repo.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeInitial());
+  final NewsApiRepo newsApiRepo;
+
+  HomeCubit(this.newsApiRepo) : super(HomeInitial());
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  final dio = DioClient();
-  List<NewsModel> news = [];
 
-  String apiKey = "a08b245643ce47d593f266a2b3bc7c4f";
 
-  // "https://newsapi.org/v2/everything?q=tesla&from=2025-06-13&sortBy=publishedAt&apiKey=$apiKey",
-  getNews() async {
+  getNews([String? query]) async {
     emit(HomeLoading());
     try {
-      var response = await dio.get(
-        EndpointConstants.everything,
-        queryParameters: {
-          "q": "tesla",
-          "from": "2025-06-13",
-          "sortBy": "publishedAt",
-          "apiKey": apiKey,
-        },
-      );
-      news = (response.data['articles'] as List)
-              .map((e) => NewsModel.fromJson(e))
-              .toList();
-      emit(HomeSuccess(news));
+      final apiNews = await newsApiRepo.fetchNews(query ?? "sports");
+      emit(HomeSuccess(apiNews));
     } catch (e) {
       emit(HomeError(e.toString()));
-      print("Error : $e");
     }
   }
 

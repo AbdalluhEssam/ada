@@ -1,7 +1,9 @@
 import 'package:ada/core/routing/routes.dart';
 import 'package:ada/features/auth/login/ui/screens/login_screen.dart';
 import 'package:ada/features/auth/signup/ui/screens/sign_up_screen.dart';
+import 'package:ada/features/home/data/models/news_model.dart';
 import 'package:ada/features/home/ui/views/home_screen.dart';
+import 'package:ada/features/home/ui/views/widgets/news_destils.dart';
 import 'package:ada/features/onboarding/ui/views/onboarding_screen.dart';
 import 'package:ada/features/splash_screen/ui/views/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +17,15 @@ class AppRouter {
       case Routes.onboardingScreen:
         return _createRoute(OnboardingScreen());
       case Routes.homeScreen:
+
         return _createRoute(HomeScreen());
       case Routes.loginScreen:
         return _createRoute(LoginScreen());
       case Routes.signupsScreen:
         return _createRoute(SignUpScreen());
+      case Routes.newsDetailsScreen:
+        final news = arguments as NewsModel;
+        return _createRoute(NewsDetailsScreen(news: news));
 
       default:
         return MaterialPageRoute(

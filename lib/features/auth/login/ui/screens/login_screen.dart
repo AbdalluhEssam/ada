@@ -85,83 +85,85 @@ class LoginScreen extends StatelessWidget {
           builder: (context, state) {
             final loginCubit = context.read<LoginCubit>();
             return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Form(
-                  key: loginCubit.formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomTextAuth(text: "Welcome\nBack!"),
-                      const SizedBox(height: 36),
-                      CustomTextFormField(
-                        hintText: "Username or Email",
-                        controller: loginCubit.emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        prefixIcon: Icon(Icons.person),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your username or email';
-                          }
-                          if (!AppUtils.isEmailValid(value.trim())) {
-                            return 'Enter a valid email address';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 32),
-                      CustomTextFormField(
-                        obscureText: loginCubit.obscureText,
-                        hintText: "Password",
-                        controller: loginCubit.passwordController,
-                        keyboardType: TextInputType.emailAddress,
-                        prefixIcon: Icon(CupertinoIcons.lock_fill),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            loginCubit.toggleObscureText();
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Form(
+                    key: loginCubit.formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomTextAuth(text: "Welcome\nBack!"),
+                        const SizedBox(height: 36),
+                        CustomTextFormField(
+                          hintText: "Username or Email",
+                          controller: loginCubit.emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          prefixIcon: Icon(Icons.person),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your username or email';
+                            }
+                            if (!AppUtils.isEmailValid(value.trim())) {
+                              return 'Enter a valid email address';
+                            }
+                            return null;
                           },
-                          icon: Icon(
-                            loginCubit.obscureText == true
-                                ? CupertinoIcons.eye_fill
-                                : CupertinoIcons.eye_slash,
-                            color: Colors.black,
-                          ),
                         ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional.centerEnd,
-                        child: TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ),
-                          child: Text(
-                            "Forgot Password?",
-                            style: TextStyle(
-                              color: AppColor.primaryColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12,
+                        const SizedBox(height: 32),
+                        CustomTextFormField(
+                          obscureText: loginCubit.obscureText,
+                          hintText: "Password",
+                          controller: loginCubit.passwordController,
+                          keyboardType: TextInputType.emailAddress,
+                          prefixIcon: Icon(CupertinoIcons.lock_fill),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              loginCubit.toggleObscureText();
+                            },
+                            icon: Icon(
+                              loginCubit.obscureText == true
+                                  ? CupertinoIcons.eye_fill
+                                  : CupertinoIcons.eye_slash,
+                              color: Colors.black,
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 50),
-                      CustomButton(
-                        text: "Login",
-                        onPressed: () {
-                          loginCubit.login();
-                        },
-                      ),
-                      const SizedBox(height: 70),
-                      LoginSocialRow(),
-                    ],
+                        Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: TextButton(
+                            onPressed: () {},
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              "Forgot Password?",
+                              style: TextStyle(
+                                color: AppColor.primaryColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 50),
+                        CustomButton(
+                          text: "Login",
+                          onPressed: () {
+                            loginCubit.login();
+                          },
+                        ),
+                        const SizedBox(height: 70),
+                        LoginSocialRow(),
+                      ],
+                    ),
                   ),
                 ),
               ),
