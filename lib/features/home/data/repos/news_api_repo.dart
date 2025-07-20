@@ -12,7 +12,6 @@ class NewsApiRepo {
       EndpointConstants.everything,
       queryParameters: {
         "q": query,
-        "from": "2025-06-16",
         "sortBy": "publishedAt",
         "apiKey": apiKey,
       },

@@ -2,13 +2,14 @@ import 'package:ada/core/routing/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/routing/app_router.dart';
 import 'core/utils/notification_service.dart';
 import 'firebase_options.dart';
 
 // This Api Key: a08b245643ce47d593f266a2b3bc7c4f
-
 
 bool isLogin = false;
 
@@ -37,21 +38,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          elevation: 0.0,
+    return ScreenUtilInit(
+      designSize: const Size(428, 926),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) => MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            elevation: 0.0,
+          ),
+          useMaterial3: true,
+          fontFamily: GoogleFonts.poppins().fontFamily,
         ),
-        useMaterial3: true,
-        fontFamily: "Montserrat",
+        initialRoute: isLogin == true ? Routes.homeScreen : Routes.splashScreen,
+        onGenerateRoute: appRouter.generateRoute,
       ),
-      initialRoute: isLogin == true ? Routes.homeScreen : Routes.splashScreen,
-      onGenerateRoute: appRouter.generateRoute,
     );
   }
 }
