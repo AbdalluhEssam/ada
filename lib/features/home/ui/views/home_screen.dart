@@ -108,7 +108,115 @@ class HomeScreen extends StatelessWidget {
                               },
                             ),
                             16.verticalSpace,
-              
+                            CustomRowTitle(title: "Trending"),
+                            16.verticalSpace,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  width: 365.w,
+                                  height: 185.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.5),
+                                        spreadRadius: 1,
+                                        blurRadius: 5,
+                                        offset: Offset(
+                                          0,
+                                          3.h,
+                                        ), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                    "https://www.navalnews.com/wp-content/uploads/2020/04/Russian_cruiser_Moskva.jpg",
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                12.verticalSpace,
+                                Text(
+                                  "Europe",
+                                  style: TextStyle(
+                                    color: AppColor.seeColor,
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                4.verticalSpace,
+                                Text(
+                                  "Russian warship: Moskva sinks in Black Sea",
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                4.verticalSpace,
+                                NewsClockWidget(),
+                                24.verticalSpace,
+                                CustomRowTitle(title: "Latest"),
+                                16.verticalSpace,
+                                SizedBox(
+                                  height: 40,
+                                  child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    shrinkWrap: true,
+                                    itemBuilder:
+                                        (context, index) => GestureDetector(
+                                      onTap: () {
+                                        controller.getNewsByCategory(
+                                          controller.categories[index],
+                                          index,
+                                        );
+                                      },
+                                      child: IntrinsicWidth(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              controller.categories[index][0].toUpperCase() + controller.categories[index].substring(1),
+                                              style: TextStyle(
+                                                color: AppColor.black,
+                                                fontSize: 14.sp,
+                                                fontWeight:
+                                                FontWeight.bold,
+
+                                              ),
+                                            ),
+                                            4.verticalSpace,
+                                            Container(
+                                              height: 2.5.h,
+                                              decoration: BoxDecoration(
+                                                color:
+                                                controller.currentIndex ==
+                                                    index
+                                                    ? AppColor
+                                                    .primaryColor
+                                                    : Colors
+                                                    .transparent,
+                                                borderRadius:
+                                                BorderRadius.circular(
+                                                  12.r,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    separatorBuilder:
+                                        (context, index) =>
+                                        SizedBox(width: 12.w),
+                                    itemCount: controller.categories.length,
+                                  ),
+                                ),
+                              ],
+                            ),
                             //
                           ],
                         );
@@ -149,115 +257,7 @@ class HomeScreen extends StatelessWidget {
                         if (state is HomeSuccess) {
                           return Column(
                             children: [
-                              CustomRowTitle(title: "Trending"),
-                              16.verticalSpace,
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    width: 365.w,
-                                    height: 185.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 5,
-                                          offset: Offset(
-                                            0,
-                                            3.h,
-                                          ), // changes position of shadow
-                                        ),
-                                      ],
-                                    ),
 
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                          "https://www.navalnews.com/wp-content/uploads/2020/04/Russian_cruiser_Moskva.jpg",
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  12.verticalSpace,
-                                  Text(
-                                    "Europe",
-                                    style: TextStyle(
-                                      color: AppColor.seeColor,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  4.verticalSpace,
-                                  Text(
-                                    "Russian warship: Moskva sinks in Black Sea",
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  4.verticalSpace,
-                                  NewsClockWidget(),
-                                  24.verticalSpace,
-                                  CustomRowTitle(title: "Latest"),
-                                  16.verticalSpace,
-                                  SizedBox(
-                                    height: 40,
-                                    child: ListView.separated(
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true,
-                                      itemBuilder:
-                                          (context, index) => GestureDetector(
-                                            onTap: () {
-                                              controller.getNewsByCategory(
-                                                controller.categories[index],
-                                                index,
-                                              );
-                                            },
-                                            child: IntrinsicWidth(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    controller.categories[index][0].toUpperCase() + controller.categories[index].substring(1),
-                                                    style: TextStyle(
-                                                      color: AppColor.black,
-                                                      fontSize: 14.sp,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-
-                                                    ),
-                                                  ),
-                                                  4.verticalSpace,
-                                                  Container(
-                                                    height: 2.5.h,
-                                                    decoration: BoxDecoration(
-                                                      color:
-                                                          controller.currentIndex ==
-                                                                  index
-                                                              ? AppColor
-                                                                  .primaryColor
-                                                              : Colors
-                                                                  .transparent,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                            12.r,
-                                                          ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                      separatorBuilder:
-                                          (context, index) =>
-                                              SizedBox(width: 12.w),
-                                      itemCount: controller.categories.length,
-                                    ),
-                                  ),
-                                ],
-                              ),
                               ListView.separated(
                                 itemCount: state.news.length,
                                 shrinkWrap: true,
