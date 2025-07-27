@@ -1,4 +1,5 @@
 import 'package:ada/core/routing/routes.dart';
+import 'package:ada/core/theme/app_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -39,23 +40,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(428, 926),
+      designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) => MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: AppColor.backgroundColor,
           appBarTheme: AppBarTheme(
-            backgroundColor: Colors.white,
+            backgroundColor: AppColor.backgroundColor,
             foregroundColor: Colors.black,
             elevation: 0.0,
           ),
           useMaterial3: true,
-          fontFamily: GoogleFonts.poppins().fontFamily,
+          fontFamily: GoogleFonts.nunitoSans().fontFamily,
         ),
-        initialRoute: isLogin == true ? Routes.homeScreen : Routes.splashScreen,
+        initialRoute: isLogin == true ? Routes.homeNoteScreen : Routes.splashScreen,
         onGenerateRoute: appRouter.generateRoute,
       ),
     );

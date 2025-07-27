@@ -4,6 +4,7 @@ import 'package:ada/features/auth/signup/ui/screens/sign_up_screen.dart';
 import 'package:ada/features/home/data/models/news_model.dart';
 import 'package:ada/features/home/ui/views/home_screen.dart';
 import 'package:ada/features/home/ui/views/widgets/news_destils.dart';
+import 'package:ada/features/home_note_app/ui/views/home_note_app.dart';
 import 'package:ada/features/onboarding/ui/views/onboarding_screen.dart';
 import 'package:ada/features/splash_screen/ui/views/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,9 @@ class AppRouter {
       case Routes.onboardingScreen:
         return _createRoute(OnboardingScreen());
       case Routes.homeScreen:
-
         return _createRoute(HomeScreen());
+      case Routes.homeNoteScreen:
+        return _createRoute(HomeNoteApp());
       case Routes.loginScreen:
         return _createRoute(LoginScreen());
       case Routes.signupsScreen:

@@ -41,50 +41,58 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-      validator: validator,
-      onChanged: onChanged,
-      onTap: onTap,
-      readOnly: readOnly,
-      maxLines: maxLines,
-      minLines: minLines,
-      style:
-          textStyle ??
-          TextStyle(
-            fontSize: 14.sp,
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle:
-            hintStyle ??
+    return SizedBox(
+      height: 38.h,
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        textInputAction: textInputAction,
+        validator: validator,
+        onChanged: onChanged,
+        onTap: onTap,
+        readOnly: readOnly,
+        maxLines: maxLines,
+        minLines: minLines,
+        style:
+            textStyle ??
             TextStyle(
-              fontSize: 14.sp,
-              color: Color(0xFF676767),
+              fontSize: 16.sp,
+              color: Colors.black,
               fontWeight: FontWeight.w500,
             ),
-        border:
-            border ??
-            OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6.0.r),
-              borderSide: const BorderSide(color: Colors.black),
-            ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(6.0.r),
-          borderSide: const BorderSide(color: Colors.blue),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(6.0.r),
-          borderSide: const BorderSide(color: Colors.red),
-        ),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          contentPadding: EdgeInsetsDirectional.only(start: 20.w),
+          hintText: hintText,
+          hintStyle:
+              hintStyle ??
+              TextStyle(
+                fontSize: 14.sp,
+                color: Color(0xFF676767),
+                fontWeight: FontWeight.w500,
+              ),
+          border:  OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.r),
+                borderSide: const BorderSide(color: Colors.white),
+              ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.r),
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.r),
+            borderSide: const BorderSide(color: Colors.blue),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.r),
+            borderSide: const BorderSide(color: Colors.red),
+          ),
 
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
+        ),
       ),
     );
   }

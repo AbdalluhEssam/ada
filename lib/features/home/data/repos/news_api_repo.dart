@@ -24,6 +24,8 @@ class NewsApiRepo {
 
   Future<List<NewsModel>> fetchNewsByCategory(String category) async {
     final response = await dio.get(
+      // https://jsonplaceholder.typicode.com/comments?postId=1
+      // https://jsonplaceholder.typicode.com/posts/1/comments
       EndpointConstants.topHeadlines,
       queryParameters: {
         "country": "us",
