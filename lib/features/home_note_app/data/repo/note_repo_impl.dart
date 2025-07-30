@@ -1,7 +1,5 @@
 import 'package:ada/core/constants/endpoint_constants.dart';
 import 'package:ada/core/network/dio_client.dart';
-import 'package:dio/src/response.dart';
-
 import '../model/note_req_add_model.dart';
 import '../model/notes_model.dart';
 import 'note_repo.dart';

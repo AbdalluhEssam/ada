@@ -6,6 +6,7 @@ import 'package:ada/core/widgets/custom_loading_app.dart';
 import 'package:ada/core/widgets/custom_login_with_google.dart';
 import 'package:ada/core/widgets/custom_text_auth.dart';
 import 'package:ada/core/widgets/custom_text_form_field.dart';
+import 'package:ada/features/auth/login/data/reops/login_repo.dart';
 import 'package:ada/features/auth/login/ui/cubit/login_cubit.dart';
 import 'package:ada/features/auth/login/ui/screens/widgets/login_social_row.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +21,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginCubit(),
+      create: (context) => LoginCubit(LoginRepo()),
       child: Scaffold(
         appBar: AppBar(toolbarHeight: 0),
         body: BlocConsumer<LoginCubit, LoginState>(
@@ -33,7 +34,7 @@ class LoginScreen extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    'تم التسجيل بنجاح!',
+                    'تم التسجيل بنجاح! ${state.userModel?.username}',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -54,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               );
 
-              context.pushNamedAndRemoveUntil(Routes.homeScreen);
+              context.pushNamedAndRemoveUntil(Routes.homeNoteScreen);
             }
             if (state is LoginError) {
               ScaffoldMessenger.of(context).showSnackBar(

@@ -1,5 +1,5 @@
 class EndpointConstants {
-  static const String baseUrl = 'http://abdalluh-essam.com/note_app';
+  static const String baseUrl = 'https://abdalluh-essam.com/note_app';
 
   // Add your endpoints here
   // News API endpoints
@@ -7,6 +7,9 @@ class EndpointConstants {
   static const String topHeadlines = '/top-headlines';
 
 
+  // Authentication API endpoints
+  static const String login = '/auth/login.php';
+  static const String register = '/auth/register.php';
   // Note API endpoints
   static const String getAllNotes = '/note/getAll.php';
   static const String getOnlyNote = '/note/get_note.php';
