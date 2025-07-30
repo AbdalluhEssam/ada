@@ -8,8 +8,8 @@ class NoteRepoImpl implements NoteRepo {
   final dio = DioClient();
 
   @override
-  NotesModel getNoteById(String noteId) {
-    final response = dio.get(
+  Future<NotesModel> getNoteById(String noteId) async {
+    final response = await dio.get(
       EndpointConstants.getOnlyNote,
       queryParameters: {'noteId': noteId},
     );
@@ -20,9 +20,13 @@ class NoteRepoImpl implements NoteRepo {
   }
 
   @override
-  addNote(NoteRustAddModel note) {
-    final response = dio.post(EndpointConstants.addNote, data: note);
+  Future<String> addNote(NoteRustAddModel note) async {
+    final response = await dio.post(EndpointConstants.addNote, queryParameters: note.toJson());
+    if (response.data['status'] == 'success') {
+      return response.data['message'] ?? 'Note added successfully';
+    }
     print(response);
+    throw Exception(response.data['message'] ?? 'Failed to add note');
   }
 
   @override

@@ -1,8 +1,10 @@
+import 'package:ada/features/home_note_app/data/model/notes_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomCardNote extends StatelessWidget {
-  const CustomCardNote({super.key});
+  final NotesModel  note;
+  const CustomCardNote({super.key, required this.note});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class CustomCardNote extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Important",
+            Text(note.title ?? "No Title",
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w900,
@@ -26,7 +28,9 @@ class CustomCardNote extends StatelessWidget {
             Divider(
               height: 20.h,
             ),
-            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            Text(
+              note.content ??
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w500,

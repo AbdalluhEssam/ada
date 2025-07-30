@@ -5,7 +5,7 @@ import '../model/note_req_add_model.dart';
 abstract class NoteRepo {
   Future<List<NotesModel>> getAllNotes(String userId);
 
-  NotesModel getNoteById(String noteId);
+  Future<NotesModel> getNoteById(String noteId);
 
-  addNote(NoteRustAddModel note);
+  Future<String> addNote(NoteRustAddModel note);
 }

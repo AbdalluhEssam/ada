@@ -1,7 +1,11 @@
+import 'package:ada/core/routing/routes.dart';
+import 'package:ada/core/utils/extensions/navigation_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/theme/app_colors.dart';
+import '../../cubit/note_cubit.dart';
 
 class CustomAppbar extends StatelessWidget {
   const CustomAppbar({super.key});
@@ -14,19 +18,29 @@ class CustomAppbar extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "22 December, 2021",
-              style: TextStyle(
-                fontSize: 13.sp,
-                fontWeight: FontWeight.w500,
-              ),
+            Row(
+              children: [
+                Text(
+                  "${context.read<NoteCubit>().username} - ",
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.primaryColor,
+                  ),
+                ),
+
+                Text(
+                  "22 December, 2021",
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
             Text(
               "Notes",
-              style: TextStyle(
-                fontSize: 26.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 26.sp, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -37,7 +51,9 @@ class CustomAppbar extends StatelessWidget {
               BorderSide(color: AppColor.primaryColor, width: 1.5.w),
             ),
           ),
-          onPressed: () {},
+          onPressed: () {
+            context.pushReplacementNamed(Routes.loginScreen);
+          },
           icon: Icon(
             Icons.more_horiz_outlined,
             color: AppColor.primaryColor,

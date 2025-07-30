@@ -34,6 +34,9 @@ class LoginCubit extends Cubit<LoginState> {
         prefs.setString("username", result.username.toString());
         prefs.setString("email", result.email.toString());
         prefs.setString("userId", result.id.toString());
+        print("prefs : ${prefs.getString("email")}");
+        print("prefs : ${prefs.getString("username")}");
+        print("prefs : ${prefs.getString("userId")}");
 
       } catch (e) {
         debugPrint("Login Error: $e");

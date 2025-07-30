@@ -16,67 +16,175 @@ class HomeNoteApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-      NoteCubit(NoteRepoImpl())
-        ..getAllNotes(),
-      child: Scaffold(
-        appBar: AppBar(toolbarHeight: 0),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: EdgeInsets.all(22.0.r),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                CustomAppbar(),
-                16.verticalSpace,
-                CustomTextFormField(
-                  hintText: "Search",
-                  hintStyle: TextStyle(
-                    color: AppColor.textGray,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                22.verticalSpace,
-                CustomGridView(),
-                20.verticalSpace,
-                Text(
-                  "Recent Notes",
-                  style: TextStyle(
-                      fontSize: 16.sp, fontWeight: FontWeight.bold),
-                ),
-                16.verticalSpace,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      create: (context) => NoteCubit(NoteRepoImpl())..getUserData(),
+      child: BlocBuilder<NoteCubit, NoteState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(toolbarHeight: 0),
+            body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.all(22.0.r),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    CustomRecentNote(isSelected: true),
-                    12.horizontalSpace,
-                    CustomRecentNote(
-                      title: "UX Design",
-                      description:
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed diam cum ligula justo. Nisi, consectetur elementum.",
+                    CustomAppbar(),
+                    16.verticalSpace,
+                    CustomTextFormField(
+                      hintText: "Search",
+                      hintStyle: TextStyle(
+                        color: AppColor.textGray,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    22.verticalSpace,
+                    CustomGridView(),
+                    20.verticalSpace,
+                    Text(
+                      "Recent Notes",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    16.verticalSpace,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomRecentNote(isSelected: true),
+                        12.horizontalSpace,
+                        CustomRecentNote(
+                          title: "UX Design",
+                          description:
+                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed diam cum ligula justo. Nisi, consectetur elementum.",
+                        ),
+                      ],
+                    ),
+                    12.verticalSpace,
+                    BlocBuilder<NoteCubit, NoteState>(
+                      builder: (context, state) {
+                        if (state is NoteLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if (state is NoteError) {
+                          return Center(
+                            child: Text(
+                              state.message,
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 16.sp,
+                              ),
+                            ),
+                          );
+                        }
+                        if (state is NoteSuccess) {
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder:
+                                (context, index) =>
+                                    CustomCardNote(note: state.notes[index]),
+                            separatorBuilder:
+                                (context, index) => 12.verticalSpace,
+                            itemCount: state.notes.length,
+                          );
+                        }
+                        return SizedBox();
+                      },
                     ),
                   ],
                 ),
-                12.verticalSpace,
-                BlocBuilder<NoteCubit, NoteState>(
-                  builder: (context, state) {
-
-
-                    return ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) => CustomCardNote(),
-                      separatorBuilder: (context, index) => 12.verticalSpace,
-                      itemCount: 8,
-                    );
-                  },
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => const AddNoteDialog(),
+                );
+              },
+              child: Icon(Icons.note_add_outlined),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class AddNoteDialog extends StatelessWidget {
+  const AddNoteDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => NoteCubit(NoteRepoImpl()),
+      child: BlocConsumer<NoteCubit, NoteState>(
+        listener: (context, state) {
+          if (state is NoteAddedSuccess) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
+          } else if (state is NoteError) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
+          }
+        },
+        builder: (context, state) {
+          final cubit = context.read<NoteCubit>();
+
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            title: const Text('Add Note'),
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextField(
+                    controller: cubit.titleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Title',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: cubit.contentController,
+                    decoration: const InputDecoration(
+                      labelText: 'Content',
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 4,
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed:
+                    state is AddNoteLoading ? null : () => cubit.addNote(),
+                child:
+                    state is AddNoteLoading
+                        ? const SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                        : const Text('Save'),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
