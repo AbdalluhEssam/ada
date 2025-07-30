@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/models/user_model.dart';
 import '../../data/reops/login_repo.dart';
 
@@ -23,11 +24,17 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void login() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (formKey.currentState?.validate() == true) {
       emit(LoginLoading());
       try {
         final result = await loginRepo.login(emailController.text, passwordController.text);
         emit(LoginSuccess(userModel: result));
+        prefs.setString("username", result.username.toString());
+        prefs.setString("email", result.email.toString());
+        prefs.setString("userId", result.id.toString());
+
       } catch (e) {
         debugPrint("Login Error: $e");
         emit(LoginError(message: e.toString()));
