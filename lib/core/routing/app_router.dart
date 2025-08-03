@@ -4,10 +4,14 @@ import 'package:ada/features/auth/signup/ui/screens/sign_up_screen.dart';
 import 'package:ada/features/home/data/models/news_model.dart';
 import 'package:ada/features/home/ui/views/home_screen.dart';
 import 'package:ada/features/home/ui/views/widgets/news_destils.dart';
+import 'package:ada/features/home_note_app/ui/views/add_note.dart';
+import 'package:ada/features/home_note_app/ui/views/edit_note.dart';
 import 'package:ada/features/home_note_app/ui/views/home_note_app.dart';
 import 'package:ada/features/onboarding/ui/views/onboarding_screen.dart';
 import 'package:ada/features/splash_screen/ui/views/splash_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../../features/home_note_app/data/model/notes_model.dart';
 
 class AppRouter {
   Route? generateRoute(RouteSettings settings) {
@@ -21,6 +25,11 @@ class AppRouter {
         return _createRoute(HomeScreen());
       case Routes.homeNoteScreen:
         return _createRoute(HomeNoteApp());
+      case Routes.addNote:
+        return _createRoute(AddNote());
+      case Routes.editNoteScreen:
+        final note = arguments as NotesModel;
+        return _createRoute(EditNoteScreen(note: note,));
       case Routes.loginScreen:
         return _createRoute(LoginScreen());
       case Routes.signupsScreen:

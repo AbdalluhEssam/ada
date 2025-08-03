@@ -14,4 +14,6 @@ class EndpointConstants {
   static const String getAllNotes = '/note/getAll.php';
   static const String getOnlyNote = '/note/get_note.php';
   static const String addNote = '/note/add.php';
+  static const String editNote = '/note/update.php';
+  static const String deleteNote = '/note/delete.php';
 }

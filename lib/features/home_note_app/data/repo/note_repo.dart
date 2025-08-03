@@ -8,4 +8,6 @@ abstract class NoteRepo {
   Future<NotesModel> getNoteById(String noteId);
 
   Future<String> addNote(NoteRustAddModel note);
+  Future<String> deleteNote(String noteId);
+  Future<String> editeNote(String noteId ,String title, String content);
 }

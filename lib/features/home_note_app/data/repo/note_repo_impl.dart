@@ -21,7 +21,10 @@ class NoteRepoImpl implements NoteRepo {
 
   @override
   Future<String> addNote(NoteRustAddModel note) async {
-    final response = await dio.post(EndpointConstants.addNote, queryParameters: note.toJson());
+    final response = await dio.post(
+      EndpointConstants.addNote,
+      queryParameters: note.toJson(),
+    );
     if (response.data['status'] == 'success') {
       return response.data['message'] ?? 'Note added successfully';
     }
@@ -48,6 +51,36 @@ class NoteRepoImpl implements NoteRepo {
           .toList();
     } else {
       return [];
+    }
+  }
+
+  @override
+  Future<String> deleteNote(String noteId) async {
+    final response = await dio.post(
+      EndpointConstants.deleteNote, data: {'note_id': noteId},
+    );
+
+    if (response.data['status'] == 'success') {
+      return response.data['message'] ?? 'Note deleted successfully';
+    } else {
+      throw Exception(response.data['message'] ?? 'Failed to delete note');
+    }
+  }
+
+  @override
+  Future<String> editeNote(String noteId, String title, String content) async{
+    final response =await dio.post(
+      EndpointConstants.editNote,
+      data: {
+        'note_id': noteId,
+        'title': title,
+        'content': content,
+      },
+    );
+    if (response.data['status'] == 'success') {
+      return response.data['message'] ?? 'Note deleted successfully';
+    } else {
+      throw response;
     }
   }
 }
