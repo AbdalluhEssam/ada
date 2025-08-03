@@ -1,5 +1,7 @@
+import 'package:ada/features/home_note_app/data/model/hive_note_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,7 +22,7 @@ class NoteCubit extends Cubit<NoteState> {
   TextEditingController contentController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  List<NotesModel> notesList = [];
+  List<HiveNotesModel> notesList = [];
 
   String? userId;
   String? username;
@@ -58,9 +60,11 @@ class NoteCubit extends Cubit<NoteState> {
     emit(NoteLoading());
 
     try {
-      final notes = await noteRepo.getAllNotes(userId.toString());
-      notesList = notes;
-      emit(NoteSuccess(notes));
+      // final notes = await noteRepo.getAllNotes(userId.toString());
+      final box = Hive.box<HiveNotesModel>('notes');
+
+      notesList = box.values.toList();
+      emit(NoteSuccess(notesList));
 
     } catch (e) {
       emit(NoteError(e.toString()));
@@ -77,15 +81,23 @@ class NoteCubit extends Cubit<NoteState> {
       }
       emit(AddNoteLoading());
       try {
-        final message = await noteRepo.addNote(
-          NoteRustAddModel(
+        // final message = await noteRepo.addNote(
+        //   NoteRustAddModel(
+        //     title: titleController.text,
+        //     content: contentController.text,
+        //     userId: userId.toString(),
+        //   ),
+        // );
+        final box = Hive.box<HiveNotesModel>('notes');
+        box.add(
+          HiveNotesModel(
             title: titleController.text,
             content: contentController.text,
-            userId: userId.toString(),
-          ),
+            usersId: userId.toString(),
+          )
         );
 
-        emit(NoteAddedSuccess(message));
+        emit(NoteAddedSuccess("Note added successfully"));
         getAllNotes();
         titleController.clear();
         contentController.clear();

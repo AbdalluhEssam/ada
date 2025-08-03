@@ -10,7 +10,7 @@ final class NoteLoading extends NoteState {}
 final class AddNoteLoading extends NoteState {}
 
 final class NoteSuccess extends NoteState {
-  final List<NotesModel> notes;
+  final List<HiveNotesModel> notes;
 
   NoteSuccess(this.notes);
 }

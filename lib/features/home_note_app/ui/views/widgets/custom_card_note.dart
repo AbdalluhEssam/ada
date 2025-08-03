@@ -1,4 +1,5 @@
 import 'package:ada/core/theme/app_colors.dart';
+import 'package:ada/features/home_note_app/data/model/hive_note_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +7,7 @@ import '../../../data/model/notes_model.dart';
 import '../../cubit/note_cubit.dart';
 
 class CustomCardNote extends StatelessWidget {
-  final NotesModel note;
+  final HiveNotesModel note;
 
   const CustomCardNote({super.key, required this.note});
 
@@ -64,7 +65,8 @@ class CustomCardNote extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  context.read<NoteCubit>().deleteNote(note.noteId.toString());
+                  note.delete();
+                  // context.read<NoteCubit>().deleteNote(note.noteId.toString());
                   Navigator.pop(context, true);
                 },
                 style: ElevatedButton.styleFrom(
@@ -103,6 +105,11 @@ class CustomCardNote extends StatelessWidget {
                     createdAt.split(" ").first, // yyyy-mm-dd
                     style: TextStyle(fontSize: 12.sp, color: Colors.black),
                   ),
+                  if(note.updatedAt != "null")
+                    Text(
+                      "Edited", // yyyy-mm-dd
+                      style: TextStyle(fontSize: 12.sp, color: Colors.black),
+                    ),
                 ],
               ),
               SizedBox(height: 12.h),
