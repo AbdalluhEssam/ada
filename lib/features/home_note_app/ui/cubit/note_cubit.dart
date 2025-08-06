@@ -26,20 +26,21 @@ class NoteCubit extends Cubit<NoteState> {
   String? username;
   String? email;
 
-
   void searchNotes(String query) {
     if (query.isEmpty) {
       emit(NoteSuccess(notesList)); // Show all notes if query is empty
       return;
     }
 
-    final filteredNotes = notesList.where((note) {
-      return note.title!.toLowerCase().contains(query.toLowerCase()) ||
-             note.content!.toLowerCase().contains(query.toLowerCase());
-    }).toList();
+    final filteredNotes =
+        notesList.where((note) {
+          return note.title!.toLowerCase().contains(query.toLowerCase()) ||
+              note.content!.toLowerCase().contains(query.toLowerCase());
+        }).toList();
 
     emit(NoteSuccess(filteredNotes));
   }
+
   void getUserData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     userId = prefs.getString("userId").toString();
@@ -57,20 +58,21 @@ class NoteCubit extends Cubit<NoteState> {
     }
     emit(NoteLoading());
 
-    try {
-      final notes = await noteRepo.getAllNotes(userId.toString());
-      notesList = notes;
-      emit(NoteSuccess(notes));
+    final notes = await noteRepo.getAllNotes(userId.toString());
 
-    } catch (e) {
-      emit(NoteError(e.toString()));
-      print(e);
-    }
+    notes.fold(
+      (l) {
+        emit(NoteError(l.toString()));
+      },
+      (notes) {
+        notesList = notes;
+        emit(NoteSuccess(notes));
+      },
+    );
   }
 
   void addNote() async {
-    if(formKey.currentState?.validate() == true){
-
+    if (formKey.currentState?.validate() == true) {
       if (userId == null) {
         emit(NoteError("User ID is not available"));
         return;
@@ -94,7 +96,6 @@ class NoteCubit extends Cubit<NoteState> {
         print(e);
       }
     }
-
   }
 
   void deleteNote(String noteId) async {
@@ -112,7 +113,11 @@ class NoteCubit extends Cubit<NoteState> {
   void editNote(String noteId) async {
     emit(NoteLoading());
     try {
-      final message = await noteRepo.editeNote(noteId, titleController.text, contentController.text);
+      final message = await noteRepo.editeNote(
+        noteId,
+        titleController.text,
+        contentController.text,
+      );
       emit(NoteEditSuccess(message)); // Clear the notes list
       getAllNotes(); // Refresh the notes list
       titleController.clear();
