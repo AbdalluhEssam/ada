@@ -1,0 +1,2 @@
+json_key_file("ada-ecommerce-649fe") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+package_name("com.example.ada") # e.g. com.krausefx.app
