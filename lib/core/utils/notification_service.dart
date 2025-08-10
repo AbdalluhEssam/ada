@@ -8,6 +8,8 @@ class NotificationService {
   static final FlutterLocalNotificationsPlugin _localNotifications =
   FlutterLocalNotificationsPlugin();
 
+
+
   static Future<void> init() async {
     // 1. الطلب إذن من المستخدم
     await _messaging.requestPermission();
