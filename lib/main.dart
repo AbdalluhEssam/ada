@@ -1,4 +1,5 @@
 import 'package:ada/core/routing/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -18,17 +19,25 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('📩 إشعار من الخلفية: ${message.notification?.title}');
 }
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await isLoggedIn();
-
-  await NotificationService.init(); // دي اللي هنشرحها دلوقتي
+  await isLoggedIn(); // دي حسب عندك انت
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  runApp(MyApp(appRouter: AppRouter()));
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path: 'assets/translations', // مجلد الترجمات
+      fallbackLocale: const Locale('en'),
+      startLocale: const Locale('en'),
+      child: MyApp(appRouter: AppRouter()),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -42,22 +51,27 @@ class MyApp extends StatelessWidget {
       designSize: const Size(428, 926),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-          appBarTheme: AppBarTheme(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-            elevation: 0.0,
+      builder:
+          (context, child) => MaterialApp(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            title: 'Flutter Demo',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              scaffoldBackgroundColor: Colors.white,
+              appBarTheme: AppBarTheme(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                elevation: 0.0,
+              ),
+              useMaterial3: true,
+              fontFamily: GoogleFonts.poppins().fontFamily,
+            ),
+            initialRoute:
+                isLogin == true ? Routes.homeScreen : Routes.splashScreen,
+            onGenerateRoute: appRouter.generateRoute,
           ),
-          useMaterial3: true,
-          fontFamily: GoogleFonts.poppins().fontFamily,
-        ),
-        initialRoute: isLogin == true ? Routes.homeScreen : Routes.splashScreen,
-        onGenerateRoute: appRouter.generateRoute,
-      ),
     );
   }
 }

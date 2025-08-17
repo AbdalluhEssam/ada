@@ -8,6 +8,7 @@ import 'package:ada/features/home/ui/views/widgets/custom_row_title.dart';
 import 'package:ada/features/home/ui/views/widgets/news_card.dart';
 import 'package:ada/features/home/ui/views/widgets/news_clock_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,22 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String isArabic(String ar, String en) {
+      if (context.locale.languageCode == 'ar') {
+        return ar;
+      } else {
+        return en;
+      }
+    }
+
+    void changeLanguage(BuildContext context) async {
+      if (context.locale.languageCode == 'en') {
+        await context.setLocale(Locale('ar'));
+      } else {
+        await context.setLocale(Locale('en'));
+      }
+    }
+
     return BlocProvider(
       create:
           (context) =>
@@ -51,9 +68,23 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     BlocBuilder<HomeCubit, HomeState>(
                       builder: (context, state) {
+                        print(context.supportedLocales);
+                        print(tr('hello'));
+                        print(tr('welcome'));
+                        print(tr('goodbye'));
+
                         final controller = context.read<HomeCubit>();
                         return Column(
                           children: [
+                            Text(
+                              isArabic("اهلا بيك", "Hello"),
+                              style: TextStyle(
+                                color: AppColor.black,
+                                fontSize: 24.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            8.verticalSpace,
                             Row(
                               children: [
                                 Image.asset(
@@ -66,7 +97,7 @@ class HomeScreen extends StatelessWidget {
                                 Container(
                                   width: 35.w,
                                   height: 35.h,
-              
+
                                   decoration: BoxDecoration(
                                     color: AppColor.white,
                                     borderRadius: BorderRadius.circular(6.r),
@@ -87,7 +118,8 @@ class HomeScreen extends StatelessWidget {
                                       Icons.notifications,
                                       color: AppColor.black,
                                     ),
-                                    onTap: () {
+                                    onTap: () async {
+                                      changeLanguage(context);
                                       // context.read<HomeCubit>().signOut();
                                     },
                                   ),
@@ -101,9 +133,14 @@ class HomeScreen extends StatelessWidget {
                                 CupertinoIcons.search,
                                 color: AppColor.black,
                               ),
-                              suffixIcon: Icon(Icons.tune, color: AppColor.black),
+                              suffixIcon: Icon(
+                                Icons.tune,
+                                color: AppColor.black,
+                              ),
                               onChanged: (value) {
-                                controller.getNews(value.isEmpty ? null : value);
+                                controller.getNews(
+                                  value.isEmpty ? null : value,
+                                );
                                 print(value);
                               },
                             ),
@@ -134,7 +171,7 @@ class HomeScreen extends StatelessWidget {
 
                                   child: CachedNetworkImage(
                                     imageUrl:
-                                    "https://www.navalnews.com/wp-content/uploads/2020/04/Russian_cruiser_Moskva.jpg",
+                                        "https://www.navalnews.com/wp-content/uploads/2020/04/Russian_cruiser_Moskva.jpg",
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -167,51 +204,54 @@ class HomeScreen extends StatelessWidget {
                                     shrinkWrap: true,
                                     itemBuilder:
                                         (context, index) => GestureDetector(
-                                      onTap: () {
-                                        controller.getNewsByCategory(
-                                          controller.categories[index],
-                                          index,
-                                        );
-                                      },
-                                      child: IntrinsicWidth(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              controller.categories[index][0].toUpperCase() + controller.categories[index].substring(1),
-                                              style: TextStyle(
-                                                color: AppColor.black,
-                                                fontSize: 14.sp,
-                                                fontWeight:
-                                                FontWeight.bold,
-
-                                              ),
-                                            ),
-                                            4.verticalSpace,
-                                            Container(
-                                              height: 2.5.h,
-                                              decoration: BoxDecoration(
-                                                color:
-                                                controller.currentIndex ==
-                                                    index
-                                                    ? AppColor
-                                                    .primaryColor
-                                                    : Colors
-                                                    .transparent,
-                                                borderRadius:
-                                                BorderRadius.circular(
-                                                  12.r,
+                                          onTap: () {
+                                            controller.getNewsByCategory(
+                                              controller.categories[index],
+                                              index,
+                                            );
+                                          },
+                                          child: IntrinsicWidth(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  controller
+                                                          .categories[index][0]
+                                                          .toUpperCase() +
+                                                      controller
+                                                          .categories[index]
+                                                          .substring(1),
+                                                  style: TextStyle(
+                                                    color: AppColor.black,
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
-                                              ),
+                                                4.verticalSpace,
+                                                Container(
+                                                  height: 2.5.h,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        controller.currentIndex ==
+                                                                index
+                                                            ? AppColor
+                                                                .primaryColor
+                                                            : Colors
+                                                                .transparent,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12.r,
+                                                        ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
                                     separatorBuilder:
                                         (context, index) =>
-                                        SizedBox(width: 12.w),
+                                            SizedBox(width: 12.w),
                                     itemCount: controller.categories.length,
                                   ),
                                 ),
@@ -222,7 +262,7 @@ class HomeScreen extends StatelessWidget {
                         );
                       },
                     ),
-              
+
                     BlocBuilder<HomeCubit, HomeState>(
                       builder: (context, state) {
                         final controller = context.read<HomeCubit>();
@@ -257,7 +297,6 @@ class HomeScreen extends StatelessWidget {
                         if (state is HomeSuccess) {
                           return Column(
                             children: [
-
                               ListView.separated(
                                 itemCount: state.news.length,
                                 shrinkWrap: true,
@@ -272,9 +311,8 @@ class HomeScreen extends StatelessWidget {
                                       },
                                       child: NewsCard(news: state.news[index]),
                                     ),
-                                separatorBuilder: (context, index) => SizedBox(
-                                  height: 16.h,
-                                ),
+                                separatorBuilder:
+                                    (context, index) => SizedBox(height: 16.h),
                               ),
                             ],
                           );
