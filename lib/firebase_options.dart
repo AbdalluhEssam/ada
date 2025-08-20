@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBlryr0n8nRZqTFRBb90-ZLVx-0LbBnr5Y',
-    appId: '1:857837821643:android:a0b8543d86ea7ea5a1c54e',
+    appId: '1:857837821643:android:b9adf33696cadfe4a1c54e',
     messagingSenderId: '857837821643',
     projectId: 'ada-ecommerce-649fe',
     storageBucket: 'ada-ecommerce-649fe.firebasestorage.app',
@@ -66,10 +66,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDDTFSB7WZU8QI-xvX_Q0lDYbG9aBFTWB4',
-    appId: '1:857837821643:ios:0e5eec18d7669f95a1c54e',
+    appId: '1:857837821643:ios:d1bb025a0dd53d95a1c54e',
     messagingSenderId: '857837821643',
     projectId: 'ada-ecommerce-649fe',
     storageBucket: 'ada-ecommerce-649fe.firebasestorage.app',
-    iosBundleId: 'com.example.ada',
+    iosBundleId: 'com.ecosystem.ada',
   );
+
 }
